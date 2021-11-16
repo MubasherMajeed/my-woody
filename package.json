@@ -2,6 +2,7 @@
   "name": "woody",
   "version": "0.0.1",
   "description": "",
+
   "author": "",
   "private": true,
   "license": "UNLICENSED",
@@ -77,6 +78,7 @@
       "**/*.(t|j)s"
     ],
     "coverageDirectory": "../coverage",
+
     "testEnvironment": "node"
   }
 }
