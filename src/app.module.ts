@@ -12,7 +12,7 @@ import { PugAdapter } from "@nestjs-modules/mailer/dist/adapters/pug.adapter";
 import SendmailTransport from "nodemailer/lib/sendmail-transport";
 
 @Module({
-  imports: [MongooseModule.forRoot("mongodb://localhost:27017/woody"), UsersModule, VehiclesModule,
+  imports: [MongooseModule.forRoot("mongodb+srv://mubashir:123@cluster0.crunx.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"), UsersModule, VehiclesModule,
     Usersv2Module
     , AppointmentsModule, AuthModule,
 
