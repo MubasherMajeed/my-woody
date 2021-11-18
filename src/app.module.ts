@@ -9,7 +9,7 @@ import { Usersv2Module } from "./module/usersv2/usersv2.module";
 import { AuthModule } from "./module/auth/auth.module";
 
 @Module({
-  imports: [MongooseModule.forRoot("mongodb://localhost:27017/woody"), UsersModule, VehiclesModule,
+  imports: [MongooseModule.forRoot("mongodb+srv://mubashir:123@cluster0.crunx.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"), UsersModule, VehiclesModule,
     Usersv2Module
     , AppointmentsModule, AuthModule,
 
