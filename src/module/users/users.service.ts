@@ -10,9 +10,9 @@ export class UsersService {
   }
 
 
-  async findByEmail(username:String) : Promise<User|undefined>{
-    const user= await this.userModel.findOne(user => user.userName === username);
-    console.log(user);
+  async findByEmail(username:string) : Promise<User|undefined>{
+    const user= await this.userModel.findOne({username:username});
+    // console.log(user);
     return user;
   }
 
@@ -30,7 +30,7 @@ export class UsersService {
 
   async post(fName: string, lName: string, email: string, password: string, phone: number, username: string,) {
     const user = new this.userModel({
-      fName:fName, lName:lName, email:email, password:password, phone:phone, userName:username
+      fName:fName, lName:lName, email:email, password:password, phone:phone, username:username
     });
     return  await user.save();
   }
@@ -42,7 +42,7 @@ export class UsersService {
       phone: phone,
       password: password,
       email: email,
-      userName:username
+      username:username
 
     }).exec();
   }

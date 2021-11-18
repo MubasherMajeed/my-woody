@@ -17,7 +17,7 @@ export class User{
   @Prop()
   password:string;
   @Prop()
-  userName:string;
+  username:string;
 
 
 }

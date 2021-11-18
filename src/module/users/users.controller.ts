@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, Post } from "@nestjs/common/decorators";
 import { UsersService } from "./users.service";
 
 @Controller("users")
@@ -16,7 +16,7 @@ export class UsersController {
       data.email,
       data.password,
       data.phone,
-      data.userName
+      data.username
     );
   }
 
@@ -32,7 +32,7 @@ export class UsersController {
     @Param("id") id :string,
     @Body() data:any,
     ){
-    await this.userService.update(id,data.fName,data.lName,data.email,data.password,data.phone,data.userName);
+    await this.userService.update(id,data.fName,data.lName,data.email,data.password,data.phone,data.username);
     return "Updated";
 
   }
