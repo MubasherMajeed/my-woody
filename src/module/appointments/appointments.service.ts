@@ -89,9 +89,9 @@ async fetchByAppointmentType(aType:number){
   }
 
   async checkSatus(status:number){
-    return this.model.find({
-      status:status
-    }).exec();
+    return (await this.model.find({
+      status: status
+    }).exec()).length;
   }
 
   async UpdateStatus(id:string,data:any){
@@ -101,18 +101,9 @@ async fetchByAppointmentType(aType:number){
     }catch (e){
         throw new BadRequestException();
     }
-
-
-     // console.log(appointment.uid);
-
-
-
     const user = await this.userService.fetch(appointment.uid) as User;
-      console.log(user);
-    await SendEmail.sendemail(user.email, user.first_name, status.toString())
-
-
-
+    await SendEmail.sendemail(user.email, user.first_name, data.status.toString());
+    return "Updated";
   }
 
 

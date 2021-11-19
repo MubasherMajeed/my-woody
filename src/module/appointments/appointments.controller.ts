@@ -17,9 +17,7 @@ export class AppointmentsController {
 
   @Post()
   @UseGuards(AuthGuard('jwt'))
-  async insert(
-    @Body() data: any
-  ) {
+  async insert( @Body() data: any ) {
     return this.appointmentService.post(data
     );
   }
@@ -90,9 +88,13 @@ export class AppointmentsController {
   @UseGuards(AuthGuard('jwt'))
   async updateStatus(@Param("id") id:string,
                      @Body()data:any){
-    if (data.status===AppointmentStatus.Approved){
-       await this.appointmentService.UpdateStatus(id, data);
+
+    if (data.status===AppointmentStatus.Rejected||data.status===AppointmentStatus.Pending||
+      data.status===AppointmentStatus.Approved||
+      data.status===AppointmentStatus.Completed||data.status===AppointmentStatus.Cancelled){
+      return  await this.appointmentService.UpdateStatus(id, data);
     }
+    return "Not Accepted";
   }
 
 
