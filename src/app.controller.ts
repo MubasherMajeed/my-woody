@@ -11,7 +11,7 @@ export class AppController {
 
 
   @UseGuards(AuthGuard('local'))
-  @Post('auth')
+  @Post('login')
   async login(@Request() req) {
     return this.authService.login(req.user._doc);
   }
