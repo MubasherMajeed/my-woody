@@ -1,4 +1,4 @@
-import { ConflictException, Injectable, NotAcceptableException } from "@nestjs/common";
+import { ConflictException, HttpException, HttpStatus, Injectable, NotAcceptableException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { User, UserDocument } from "../../data/schemas/user.schema";
 import { Model } from "mongoose";
@@ -40,14 +40,16 @@ export class UsersService {
     });
 
     if (emailCheck){
-      throw new NotAcceptableException({
-        message:"User with this email already exist"
-      });
+      throw new HttpException(
+        "User with this email already exist",
+        HttpStatus.NOT_ACCEPTABLE
+      )
     }
     if (usernameCheck){
-      throw new NotAcceptableException({
-        message:"User with this username already exist"
-      });
+      throw new HttpException(
+        "User with this username already exist",
+        HttpStatus.NOT_ACCEPTABLE
+      )
     }
     const user = new this.userModel({
       first_name:data.first_name, last_name:data.last_name,
@@ -62,7 +64,6 @@ export class UsersService {
       first_name:data.first_name, last_name:data.last_name,
       email:data.email, password:data.password, phone:data.phone,
       username:data.username
-
     }).exec();
   }
 

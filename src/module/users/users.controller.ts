@@ -8,7 +8,6 @@ export class UsersController {
   constructor(private readonly userService: UsersService) {
   }
 
-  @HttpCode(201)
   @Post()
   async insert(@Body() data: any) {
 
