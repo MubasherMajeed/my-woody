@@ -24,7 +24,6 @@ export class AppController {
 
   @Post("email")
    async sendMail(@Body()data:any){
-   console.log(data.email);
     // const user= await this.usersService.fetch(data._id);
       await SendEmail.sendemail(data.email,data.first_name ,data.status);
     //console.log(user);

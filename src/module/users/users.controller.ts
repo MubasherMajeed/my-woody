@@ -10,7 +10,6 @@ export class UsersController {
 
   @Post()
   async insert(@Body() data: any) {
-
     return this.userService.post(data);
   }
 

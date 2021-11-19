@@ -2,6 +2,7 @@ import { ConflictException, HttpException, HttpStatus, Injectable, NotAcceptable
 import { InjectModel } from "@nestjs/mongoose";
 import { User, UserDocument } from "../../data/schemas/user.schema";
 import { Model } from "mongoose";
+import * as bcrypt from "bcrypt";
 
 @Injectable()
 export class UsersService {
@@ -30,7 +31,6 @@ export class UsersService {
 
   async post(data:any) {
 
-
     const emailCheck= await this.userModel.findOne({
       email:data.email
     });
@@ -51,6 +51,8 @@ export class UsersService {
         HttpStatus.NOT_ACCEPTABLE
       )
     }
+
+    
     const user = new this.userModel({
       first_name:data.first_name, last_name:data.last_name,
       email:data.email, password:data.password, phone:data.phone,
@@ -59,10 +61,11 @@ export class UsersService {
     return  await user.save();
   }
 
+
   async update(id: string, data:any) {
     return await this.userModel.findByIdAndUpdate(id, {
       first_name:data.first_name, last_name:data.last_name,
-      email:data.email, password:data.password, phone:data.phone,
+      email:data.email,  phone:data.phone,
       username:data.username
     }).exec();
   }
