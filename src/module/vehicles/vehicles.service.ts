@@ -21,21 +21,16 @@ export class VehiclesService {
     return this.model.findByIdAndDelete(id);
   }
 
-  async post(year: string, make: string, model: string, vin: string, uid:string) {
+  async post(data:any) {
     const vehicle = new this.model({
-      year:year, make:make, model:model, vin:vin, uid:uid
+      year:data.year, make:data.make, model:data.model, vin:data.vin, uid:data.uid
     });
     return  await vehicle.save();
   }
 
-  async update(id: string, year: string, make: string, model: string, vin: string, uid: mongoose.Schema.Types.ObjectId) {
+  async update(id: string, data:any) {
     return await this.model.findByIdAndUpdate(id, {
-      year: year,
-      make: make,
-      model: model,
-      vin: vin,
-      uid: uid
-
+      year:data.year, make:data.make, model:data.model, vin:data.vin, uid:data.uid
     }).exec();
   }
 

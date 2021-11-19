@@ -1,6 +1,5 @@
 import { Controller, Get, Request, Post, UseGuards, Param, Body } from "@nestjs/common";
 import { SendEmail } from "./data/utilities/emailmodule";
-import { UsersService } from "./module/users/users.service";
 import { AuthGuard } from "@nestjs/passport";
 import { AuthService } from "./module/auth/auth.service";
 import { JwtAuthGuard } from "./module/auth/jwt-auth.guard";
@@ -27,7 +26,7 @@ export class AppController {
    async sendMail(@Body()data:any){
    console.log(data.email);
     // const user= await this.usersService.fetch(data._id);
-      await SendEmail.sendemail(data.email,data.fName ,data.status);
+      await SendEmail.sendemail(data.email,data.first_name ,data.status);
     //console.log(user);
 
 

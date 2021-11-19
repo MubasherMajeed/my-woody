@@ -15,7 +15,7 @@ export class Vehicle {
   model:string;
   @Prop()
   vin:string;
-  @Prop({ref:User.name})
-  uid:mongoose.Schema.Types.ObjectId;
+  @Prop({type:mongoose.Schema.Types.ObjectId,ref:User.name})
+  uid:string;
 }
 export const VehicleSchema = SchemaFactory.createForClass(Vehicle);

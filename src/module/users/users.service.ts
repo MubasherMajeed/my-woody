@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { ConflictException, Injectable, NotAcceptableException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { User, UserDocument } from "../../data/schemas/user.schema";
 import { Model } from "mongoose";
@@ -28,21 +28,40 @@ export class UsersService {
     return this.userModel.findByIdAndDelete(id);
   }
 
-  async post(fName: string, lName: string, email: string, password: string, phone: number, username: string,) {
+  async post(data:any) {
+
+
+    const emailCheck= await this.userModel.findOne({
+      email:data.email
+    });
+
+    const usernameCheck= await this.userModel.findOne({
+      username:data.username
+    });
+
+    if (emailCheck){
+      throw new NotAcceptableException({
+        message:"User with this email already exist"
+      });
+    }
+    if (usernameCheck){
+      throw new NotAcceptableException({
+        message:"User with this username already exist"
+      });
+    }
     const user = new this.userModel({
-      first_name:fName, last_name:lName, email:email, password:password, phone:phone, username:username
+      first_name:data.first_name, last_name:data.last_name,
+      email:data.email, password:data.password, phone:data.phone,
+      username:data.username
     });
     return  await user.save();
   }
 
-  async update(id: string, fName: string, lName: string, email: string, password: string, phone: number,username:string) {
+  async update(id: string, data:any) {
     return await this.userModel.findByIdAndUpdate(id, {
-      first_name: fName,
-      last_name: lName,
-      phone: phone,
-      password: password,
-      email: email,
-      username:username
+      first_name:data.first_name, last_name:data.last_name,
+      email:data.email, password:data.password, phone:data.phone,
+      username:data.username
 
     }).exec();
   }

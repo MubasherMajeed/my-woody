@@ -1,25 +1,22 @@
 import * as nodemailer from "nodemailer";
-import { User } from "../schemas/user.schema";
-import { UsersService } from "../../module/users/users.service";
-
 
 export class SendEmail {
 
-    static  async sendemail(email:string,fname:string ,status: string) {
+    static  async sendemail(email:string,first_name:string ,status: string) {
 
     try {
 
       let transporter = nodemailer.createTransport(
         {
-          host: "smtp.gmail.com",
-          port: 587,
+          host: process.env.SMTP_HOST,
+          port: +process.env.SMTP_PORT,
           secure: false,
 
           requireTLS: true,
 
           auth: {
-            user: "rk1675156@gmail.com",
-            pass: "xsghepxbncoxcsas"
+            user: process.env.EMAIL_USERNAME,
+            pass: process.env.EMAIL_PASSWORD
           }
         }
       );
@@ -27,10 +24,10 @@ export class SendEmail {
       let info = await transporter.sendMail(
         {
 
-          from: "rk1675156@gmail.com",
+          from: process.env.EMAIL_USERNAME,
           to: email,
           subject: "Hello Here I Am",
-          html: `<p style="color: #626262;">Dear ${fname},</p>
+          html: `<p style="color: #626262;">Dear ${first_name},</p>
               <p style="color: #626262;">Your appointment is ${status}.</p>`
         }
       );

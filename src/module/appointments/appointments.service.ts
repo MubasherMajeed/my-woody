@@ -33,54 +33,40 @@ export class AppointmentsService {
   }
 
 
-  async post(aType: number, serviceType: number, desc: string,
-             date: Date,  timeFrom: string, timeTo: string,
-             addressLine1: string,
-             addressLine2: string,
-             city: string,
-             state: string,
-             zipCode: number,
-             status: number,
-             uid: string) {
+  async post(data:any) {
     const vehicle = new this.model({
-      aType:aType,
-      serviceType:serviceType,
-      description:desc,
-      date:date,
-      timeFrom:timeFrom,
-      timeTo:timeTo,
-      addressLine1:addressLine1,
-      addressLine2:addressLine2,
-      city:city,
-      state:state,
-      zipCode:zipCode,
-      status:status,
-      uid:uid
+      aType:data.aType,
+      serviceType:data.serviceType,
+      description:data.description,
+      date:data.date,
+     timeFrom: data.timeFrom,
+      timeTo:data.timeTo,
+      addressLine1:data.addressLine1,
+      addressLine2:data.addressLine2,
+      city:data.city,
+      state:data.state,
+      zipCode:data.zipCode,
+      status:data.status,
+      uid:data.uid,
     });
     return  await vehicle.save();
   }
 
-  async update(id: string, aType: number, serviceType: number, desc: string,
-               date: Date,  timeFrom: string, timeTo: string,
-               addressLine1: string,
-               addressLine2: string,
-               city: string,
-               state: string,
-               zipCode: number,
-               status: number,
-               uid: string) {
+  async update(id: string, data:any) {
     return await this.model.findByIdAndUpdate(id, {
-      aType:aType, serviceType:serviceType, description:desc,
-      date:date,
-      timeFrom:timeFrom,
-      timeTo:timeTo,
-      addressLine1:addressLine1,
-      addressLine2:addressLine2,
-      city:city,
-      state:state,
-      zipCode:zipCode,
-      status:zipCode,
-      uid:uid
+      aType:data.aType,
+      serviceType:data.serviceType,
+      description:data.description,
+      date:data.date,
+      timeFrom: data.timeFrom,
+      timeTo:data.timeTo,
+      addressLine1:data.addressLine1,
+      addressLine2:data.addressLine2,
+      city:data.city,
+      state:data.state,
+      zipCode:data.zipCode,
+      status:data.status,
+      uid:data.uid
 
     }).exec();
   }
@@ -108,10 +94,10 @@ async fetchByAppointmentType(aType:number){
     }).exec();
   }
 
-  async UpdateStatus(id:string,status:number){
+  async UpdateStatus(id:string,data:any){
     let appointment;
     try {
-       appointment=await this.model.findByIdAndUpdate(id,{status:status});
+       appointment=await this.model.findByIdAndUpdate(id,{status:data.status});
     }catch (e){
         throw new BadRequestException();
     }
