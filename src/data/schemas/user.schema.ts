@@ -7,13 +7,14 @@ export type UserDocument=User&mongoose.Document;
 export class User{
 
   @Prop()
-  fName:string;
+  first_name:string;
   @Prop()
-  lName:string;
+  last_name:string;
   @Prop()
   email:string
   @Prop()
   phone:number;
+
   @Prop()
   password:string;
   @Prop()

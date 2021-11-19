@@ -11,8 +11,8 @@ export class UsersController {
     @Body() data: any
   ) {
     return this.userService.post(
-      data.fName,
-      data.lName,
+      data.first_name,
+      data.last_name,
       data.email,
       data.password,
       data.phone,
@@ -32,7 +32,7 @@ export class UsersController {
     @Param("id") id :string,
     @Body() data:any,
     ){
-    await this.userService.update(id,data.fName,data.lName,data.email,data.password,data.phone,data.username);
+    await this.userService.update(id,data.first_name,data.last_name,data.email,data.password,data.phone,data.username);
     return "Updated";
 
   }

@@ -123,7 +123,7 @@ async fetchByAppointmentType(aType:number){
 
     const user = await this.userService.fetch(appointment.uid) as User;
       console.log(user);
-    await SendEmail.sendemail(user.email, user.fName, status.toString())
+    await SendEmail.sendemail(user.email, user.first_name, status.toString())
 
 
 

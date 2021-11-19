@@ -30,15 +30,15 @@ export class UsersService {
 
   async post(fName: string, lName: string, email: string, password: string, phone: number, username: string,) {
     const user = new this.userModel({
-      fName:fName, lName:lName, email:email, password:password, phone:phone, username:username
+      first_name:fName, last_name:lName, email:email, password:password, phone:phone, username:username
     });
     return  await user.save();
   }
 
   async update(id: string, fName: string, lName: string, email: string, password: string, phone: number,username:string) {
     return await this.userModel.findByIdAndUpdate(id, {
-      fName: fName,
-      lName: lName,
+      first_name: fName,
+      last_name: lName,
       phone: phone,
       password: password,
       email: email,
