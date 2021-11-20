@@ -21,12 +21,22 @@ export class UsersController {
   }
 
 
+  @Get("blake")
+  balke(){
+   return this.userService.blake2();
+  }
+
+  @Get("search")
+  // @UseGuards(AuthGuard('jwt'))
+  async search(@Body() data:any ){
+    return this.userService.search(data);
+  }
+
   @Patch(":id")
   @UseGuards(AuthGuard('jwt'))
   async updateUser(@Param("id") id: string, @Body() data: any) {
     await this.userService.update(id, data);
     return "Updated";
-
   }
 
   @Delete(":id")

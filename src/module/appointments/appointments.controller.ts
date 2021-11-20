@@ -1,10 +1,24 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Request,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  UseGuards,
+  HttpException,
+  HttpStatus
+} from "@nestjs/common";
 import { AppointmentsService } from "./appointments.service";
 import { AppointmentStatus } from "../../data/schemas/appointment.schema";
 import { SendEmail } from "../../data/utilities/emailmodule";
 import { UsersService } from "../users/users.service";
 import { User } from "../../data/schemas/user.schema";
 import { AuthGuard } from "@nestjs/passport";
+import { JwtAuthGuard } from "../auth/jwt-auth.guard";
+import { compareSync } from "bcrypt";
 
 @Controller('appointments')
 export class AppointmentsController {
@@ -15,6 +29,13 @@ export class AppointmentsController {
   }
 
 
+  @Post("pages")
+  @UseGuards(AuthGuard('jwt'))
+  getPages(@Body() data:any){
+    return this.appointmentService.fetchPages(data)
+  }
+
+
   @Post()
   @UseGuards(AuthGuard('jwt'))
   async insert( @Body() data: any ) {
@@ -22,11 +43,18 @@ export class AppointmentsController {
     );
   }
 
+
   @Get()
   @UseGuards(AuthGuard('jwt'))
-  async fetchAll() {
-    const appointments = await this.appointmentService.fetch();
-    return appointments;
+  async fetchAll(@Request() req) {
+      console.log(req.user);
+    if (req.user.role ===1){
+
+      const appointments = await this.appointmentService.fetch();
+      return appointments;
+    }
+    throw new HttpException("No Access To this Route",HttpStatus.BAD_REQUEST);
+
   }
 
 
@@ -86,8 +114,7 @@ export class AppointmentsController {
 
   @Patch("updatestatus/:id")
   @UseGuards(AuthGuard('jwt'))
-  async updateStatus(@Param("id") id:string,
-                     @Body()data:any){
+  async updateStatus(@Param("id") id:string, @Body()data:any){
 
     if (data.status===AppointmentStatus.Rejected||data.status===AppointmentStatus.Pending||
       data.status===AppointmentStatus.Approved||

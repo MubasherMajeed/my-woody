@@ -14,11 +14,12 @@ export class User{
   email:string
   @Prop()
   phone:number;
-
   @Prop()
   password:string;
   @Prop()
   username:string;
+  @Prop()
+  role:number;
 
 
 }

@@ -1,8 +1,10 @@
-import { ConflictException, HttpException, HttpStatus, Injectable, NotAcceptableException } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { User, UserDocument } from "../../data/schemas/user.schema";
 import { Model } from "mongoose";
-import * as bcrypt from "bcrypt";
+import * as blake2 from "blake2";
+import { concatMapTo } from "rxjs";
+import has = Reflect.has;
 
 @Injectable()
 export class UsersService {
@@ -11,10 +13,8 @@ export class UsersService {
   }
 
 
-  async findByEmail(username:string) : Promise<User|undefined>{
-    const user= await this.userModel.findOne({username:username});
-    // console.log(user);
-    return user;
+  async findByUsername(username:string) : Promise<User|undefined>{
+    return  this.userModel.findOne({ username: username });
   }
 
 
@@ -22,23 +22,45 @@ export class UsersService {
     if (id) {
       return this.userModel.findById(id);
     }
-    return this.userModel.find().exec();
+    return this.userModel.find().sort({
+      "username":"DESC"
+    }).exec();
   }
+
+
+
+
+  search(data:any){
+      return this.userModel.find({
+            first_name:{ $regex: data.first_name }
+      }).exec();
+  }
+
+
+  blake2(){
+    var h = blake2.createHash('blake2b');
+    h.update(Buffer.from("mubasher"));
+    console.log(h.digest("hex"));
+  }
+
+
+
+
+
+
 
    delete(id?: string) {
     return this.userModel.findByIdAndDelete(id);
   }
 
-  async post(data:any) {
 
+  async post(data:any) {
     const emailCheck= await this.userModel.findOne({
       email:data.email
     });
-
     const usernameCheck= await this.userModel.findOne({
       username:data.username
     });
-
     if (emailCheck){
       throw new HttpException(
         "User with this email already exist",
@@ -52,11 +74,11 @@ export class UsersService {
       )
     }
 
-    
     const user = new this.userModel({
       first_name:data.first_name, last_name:data.last_name,
       email:data.email, password:data.password, phone:data.phone,
-      username:data.username
+      username:data.username,
+      role:data.role??0
     });
     return  await user.save();
   }

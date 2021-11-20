@@ -34,6 +34,7 @@
     "@nestjs/passport": "^8.0.1",
     "@nestjs/platform-express": "^8.2.0",
     "bcrypt": "^5.0.1",
+    "blake2": "^4.0.2",
     "mongoose": "^6.0.12",
     "nodemailer": "^6.7.1",
     "passport": "^0.5.0",

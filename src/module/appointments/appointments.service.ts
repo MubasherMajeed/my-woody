@@ -27,6 +27,9 @@ export class AppointmentsService {
     // }
 
   }
+  fetchPages(data:any){
+     return  this.model.find( ).skip(data.limit*(data.page_number-1)).limit(data.limit).exec();
+  }
 
   delete(id?: string) {
     return this.model.findByIdAndDelete(id);
