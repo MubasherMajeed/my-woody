@@ -1,12 +1,14 @@
-import { Controller, Get, Request, Post, UseGuards, Param, Body } from "@nestjs/common";
+import { Controller, Get, Request, Post, UseGuards,Param, Body } from "@nestjs/common";
 import { SendEmail } from "./data/utilities/emailmodule";
 import { AuthGuard } from "@nestjs/passport";
 import { AuthService } from "./module/auth/auth.service";
 import { JwtAuthGuard } from "./module/auth/jwt-auth.guard";
+import { GeneratePdf } from "./data/utilities/report";
 
 @Controller()
 export class AppController {
   constructor(private readonly authService: AuthService) {}
+
 
 
 

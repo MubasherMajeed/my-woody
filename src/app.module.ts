@@ -10,7 +10,7 @@ import { AuthModule } from "./module/auth/auth.module";
 import { ConfigModule } from "@nestjs/config";
 
 @Module({
-  imports: [MongooseModule.forRoot("mongodb+srv://mubashir:123@cluster0.crunx.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"), UsersModule, VehiclesModule,
+  imports: [MongooseModule.forRoot("mongodb://localhost:27017/woody"), UsersModule, VehiclesModule,
     Usersv2Module,
     ConfigModule.forRoot()
     , AppointmentsModule, AuthModule,

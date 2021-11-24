@@ -1,7 +1,8 @@
 import { Body, Controller, Delete, Get, HttpCode, Param, Patch, Post, Res } from "@nestjs/common/decorators";
 import { UsersService } from "./users.service";
-import { UseGuards } from "@nestjs/common";
+import { Request, UseGuards } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
+import { GeneratePdf } from "../../data/utilities/report";
 
 @Controller("users")
 export class UsersController {
@@ -14,33 +15,47 @@ export class UsersController {
   }
 
   @Get()
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard("jwt"))
   async fetchAll() {
     const users = await this.userService.fetch();
     return users;
   }
 
+  @Get("pdf")
+  @UseGuards(AuthGuard("jwt"))
+  pdf(@Request() req) {
+    const user = req.user;
+    GeneratePdf.generateReport({
+      first_name: user.first_name,
+      _id:user._id,
+      email:user.email,
+      phone:user.phone,
+      username:user.username
+    });
+
+  }
+
 
   @Get("blake")
-  balke(){
-   return this.userService.blake2();
+  balke() {
+    return this.userService.blake2();
   }
 
   @Get("search")
   // @UseGuards(AuthGuard('jwt'))
-  async search(@Body() data:any ){
+  async search(@Body() data: any) {
     return this.userService.search(data);
   }
 
   @Patch(":id")
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard("jwt"))
   async updateUser(@Param("id") id: string, @Body() data: any) {
     await this.userService.update(id, data);
     return "Updated";
   }
 
   @Delete(":id")
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard("jwt"))
   async removeUser(@Param("id")uId: string) {
 
     await this.userService.delete(uId);
@@ -48,7 +63,7 @@ export class UsersController {
   }
 
   @Get(":id")
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard("jwt"))
   async getOne(@Param("id")uId: string) {
     return this.userService.fetch(uId);
 

@@ -5,11 +5,13 @@ import {
   Delete,
   Get,
   Param,
+  Response,
   Patch,
   Post,
   UseGuards,
+  Header,
   HttpException,
-  HttpStatus
+  HttpStatus, StreamableFile
 } from "@nestjs/common";
 import { AppointmentsService } from "./appointments.service";
 import { AppointmentStatus } from "../../data/schemas/appointment.schema";
@@ -19,6 +21,7 @@ import { User } from "../../data/schemas/user.schema";
 import { AuthGuard } from "@nestjs/passport";
 import { JwtAuthGuard } from "../auth/jwt-auth.guard";
 import { compareSync } from "bcrypt";
+import { createReadStream } from "fs";
 
 @Controller('appointments')
 export class AppointmentsController {
@@ -41,6 +44,17 @@ export class AppointmentsController {
   async insert( @Body() data: any ) {
     return this.appointmentService.post(data
     );
+  }
+
+  @Get("pdf/:id")
+  async pdf(@Param( 'id') id:string,@Response({ passthrough: true }) res){
+     await this.appointmentService.pdf(id);
+    const file=createReadStream('result.pdf');
+    res.set({
+      'Content-Type': 'application/pdf',
+      'Content-Disposition': 'attachment; filename=result.pdf',
+    });
+    return new StreamableFile(file);
   }
 
 

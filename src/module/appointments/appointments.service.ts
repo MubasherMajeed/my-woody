@@ -7,6 +7,7 @@ import mongoose from "mongoose";
 import { User } from "../../data/schemas/user.schema";
 import { equal } from "assert";
 import { SendEmail } from "../../data/utilities/emailmodule";
+import { GeneratePdf } from "../../data/utilities/report";
 
 @Injectable()
 export class AppointmentsService {
@@ -107,6 +108,13 @@ async fetchByAppointmentType(aType:number){
     const user = await this.userService.fetch(appointment.uid) as User;
     await SendEmail.sendemail(user.email, user.first_name, data.status.toString());
     return "Updated";
+  }
+
+  async pdf(id: string) {
+
+    const appointments=await this.model.find({uid:id}).populate('uid');
+    return await GeneratePdf.generateReport(appointments);
+
   }
 
 
