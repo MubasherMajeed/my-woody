@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import * as mongoose from "mongoose";
+import { ApiProperty } from "@nestjs/swagger";
 
 export type UserDocument=User&mongoose.Document;
 

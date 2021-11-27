@@ -28,13 +28,12 @@ export class SendEmail {
           to: email,
           subject: "Hello Here I Am",
           html: `<p style="color: #626262;">Dear ${first_name},</p>
-              <p style="color: #626262;">Your appointment is ${status}.</p>`
+              <p style="color: #626262;">Your appointment is ${status}.`
         }
       );
       console.log("Message sent: %s", info.messageId);
       console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
     } catch (e) {
-
       console.log(e);
     }
 

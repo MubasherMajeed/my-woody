@@ -3,19 +3,29 @@ import { UsersService } from "./users.service";
 import { Request, UseGuards } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import { GeneratePdf } from "../../data/utilities/report";
+import { ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiFoundResponse, ApiTags } from "@nestjs/swagger";
+import { UserDto, UserSearchDto } from "../../data/dto/dto";
 
+
+
+@ApiTags("Users")
 @Controller("users")
 export class UsersController {
   constructor(private readonly userService: UsersService) {
   }
 
   @Post()
+  @ApiBody({
+    type:UserDto
+  })
+  @ApiCreatedResponse()
   async insert(@Body() data: any) {
     return this.userService.post(data);
   }
 
   @Get()
   @UseGuards(AuthGuard("jwt"))
+  @ApiBearerAuth("access-token")
   async fetchAll() {
     const users = await this.userService.fetch();
     return users;
@@ -23,6 +33,7 @@ export class UsersController {
 
   @Get("pdf")
   @UseGuards(AuthGuard("jwt"))
+  @ApiBearerAuth("access-token")
   pdf(@Request() req) {
     const user = req.user;
     GeneratePdf.generateReport({
@@ -41,14 +52,22 @@ export class UsersController {
     return this.userService.blake2();
   }
 
-  @Get("search")
-  // @UseGuards(AuthGuard('jwt'))
+  @Post("search")
+  @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth("access-token")
+  @ApiBody({
+    type:UserSearchDto
+  })
+  @ApiFoundResponse()
   async search(@Body() data: any) {
     return this.userService.search(data);
   }
 
   @Patch(":id")
   @UseGuards(AuthGuard("jwt"))
+  @ApiBody({
+    type: UserDto
+  })
   async updateUser(@Param("id") id: string, @Body() data: any) {
     await this.userService.update(id, data);
     return "Updated";
@@ -56,6 +75,7 @@ export class UsersController {
 
   @Delete(":id")
   @UseGuards(AuthGuard("jwt"))
+  @ApiBearerAuth("access-token")
   async removeUser(@Param("id")uId: string) {
 
     await this.userService.delete(uId);
@@ -64,6 +84,7 @@ export class UsersController {
 
   @Get(":id")
   @UseGuards(AuthGuard("jwt"))
+  @ApiBearerAuth("access-token")
   async getOne(@Param("id")uId: string) {
     return this.userService.fetch(uId);
 

@@ -38,41 +38,12 @@ export class AppointmentsService {
 
 
   async post(data:any) {
-    const vehicle = new this.model({
-      aType:data.aType,
-      serviceType:data.serviceType,
-      description:data.description,
-      date:data.date,
-     timeFrom: data.timeFrom,
-      timeTo:data.timeTo,
-      addressLine1:data.addressLine1,
-      addressLine2:data.addressLine2,
-      city:data.city,
-      state:data.state,
-      zipCode:data.zipCode,
-      status:data.status,
-      uid:data.uid,
-    });
-    return  await vehicle.save();
+    const appointment = await this.model.create(data);
+    return  await appointment.save();
   }
 
   async update(id: string, data:any) {
-    return await this.model.findByIdAndUpdate(id, {
-      aType:data.aType,
-      serviceType:data.serviceType,
-      description:data.description,
-      date:data.date,
-      timeFrom: data.timeFrom,
-      timeTo:data.timeTo,
-      addressLine1:data.addressLine1,
-      addressLine2:data.addressLine2,
-      city:data.city,
-      state:data.state,
-      zipCode:data.zipCode,
-      status:data.status,
-      uid:data.uid
-
-    }).exec();
+    return await this.model.findByIdAndUpdate(id, data).exec();
   }
 
    async fetchByUserId(id:string){
@@ -101,7 +72,7 @@ async fetchByAppointmentType(aType:number){
   async UpdateStatus(id:string,data:any){
     let appointment;
     try {
-       appointment=await this.model.findByIdAndUpdate(id,{status:data.status});
+       appointment=await this.model.findByIdAndUpdate(id,data);
     }catch (e){
         throw new BadRequestException();
     }

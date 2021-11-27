@@ -74,22 +74,13 @@ export class UsersService {
       )
     }
 
-    const user = new this.userModel({
-      first_name:data.first_name, last_name:data.last_name,
-      email:data.email, password:data.password, phone:data.phone,
-      username:data.username,
-      role:data.role??0
-    });
+    const user = new this.userModel(data);
     return  await user.save();
   }
 
 
   async update(id: string, data:any) {
-    return await this.userModel.findByIdAndUpdate(id, {
-      first_name:data.first_name, last_name:data.last_name,
-      email:data.email,  phone:data.phone,
-      username:data.username
-    }).exec();
+    return await this.userModel.findByIdAndUpdate(id, data).exec();
   }
 
 }
