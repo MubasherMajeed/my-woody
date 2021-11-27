@@ -1,4 +1,5 @@
 import {
+  MessageBody,
   OnGatewayInit,
   SubscribeMessage,
   WebSocketGateway,
@@ -8,8 +9,8 @@ import { Server, Socket } from "socket.io"
 import { Global } from "@nestjs/common";
 
 @Global()
-@WebSocketGateway()
-export class EventsGatway implements OnGatewayInit {
+@WebSocketGateway(8080,{namespace:'chat'})
+export class EventsGateway implements OnGatewayInit {
   @WebSocketServer() server: Server;
   users: number = 0;
 
@@ -33,7 +34,7 @@ export class EventsGatway implements OnGatewayInit {
   }
 
   @SubscribeMessage('chat')
-  async onChat(client, message) {
-    client.broadcast.emit('chat', message);
+  handleEvent(@MessageBody() data: string): string {
+    return data;
   }
 }
